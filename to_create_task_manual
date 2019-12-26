@@ -1,14 +1,21 @@
 drop table work;
-crate table work(
-task id_number NOT NULL,
+create table work(
+task id number NOT NULL,
 task varchar2(50) NOT NULL,
 person name varchar2(50) NOT NULL,
 deadline date NOT NULL,
-completed_on date,
-status_check char(1),
+completed on date,
+created date,
+status check char(1),
 contraint task_id_primary key(task id),
 constraint status_st check(status in('Y','N'))
 );
-select *from work;
+alter work add(priority number NOT NULL,modified date date);
+insert into work(task,person name,deadline,completed on,created,modified,priority)
+values('Install Oracle','shiva',to_date('26-12-2019','DD-MM-YYYY'),to_date('25-12-2019','DD-MM-YYYY'),to_date('20-12-2019','DD-MM-YYYY'),to_date('22-12-2019','DD-MM-YYYY'),1);
+insert into work(task,person name,deadline,completed on,created,modified,priority)
+values('Install IDK','arun',to_date('30-12-2019','DD-MM-YYYY'),to_date('29-12-2019','DD-MM-YYYY'),to_date('26-12-2019','DD-MM-YYYY'),to_date('27-12-2019','DD-MM-YYYY'),2);
+select * from work;
+
 
 
