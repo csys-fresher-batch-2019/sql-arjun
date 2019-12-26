@@ -1,20 +1,19 @@
-drop table work;
-create table work(
-task varchar2(50) NOT NULL,
-person_name varchar2(50) NOT NULL,
-deadline date NOT NULL,
-completed_on date,
+drop table list;
+create table list(
+task varchar2(20),
+person_name varchar2(20),
+deadline date,
+completed date,
 created date,
-status check char(1),
-constraint task_id_pk primary key(task_id number NOT NULL),
-constraint status_st check(status in('Y','N'))
+modified date,
+priorities number,
+constraint task_pk primary key(task),
+status char(1),
+constraint status_st check(status in('y','n'))
 );
-alter work add(priority number NOT NULL,modified_date date);
-insert into work(task,person_name,deadline,completed_on,created,modified,priority)
-values('Install Oracle','shiva',to_date('26-12-2019','DD-MM-YYYY'),to_date('25-12-2019','DD-MM-YYYY'),to_date('20-12-2019','DD-MM-YYYY'),to_date('22-12-2019','DD-MM-YYYY'),1);
-insert into work(task,person_name,deadline,completed_on,created,modified,priority)
-values('Install IDK','arun',to_date('30-12-2019','DD-MM-YYYY'),to_date('29-12-2019','DD-MM-YYYY'),to_date('26-12-2019','DD-MM-YYYY'),to_date('27-12-2019','DD-MM-YYYY'),2);
-select * from work;
+insert into list(task,person_name,deadline,completed,created,modified,priorities,status)
+VALUES('Install Oracle','shiva',to_date ('26-12-2017','DD-MM-YYYY'),to_date ('25-12-2017','DD-MM-YYYY'),to_date ('22-12-2017','DD-MM-YYYY'),to_date ('23-12-2017','DD-MM-YYYY'),1,'y');
+select * from list;
 
 
 
