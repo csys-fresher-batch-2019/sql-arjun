@@ -1,0 +1,14 @@
+drop table work;
+crate table work(
+task id_number NOT NULL,
+task varchar2(50) NOT NULL,
+person name varchar2(50) NOT NULL,
+deadline date NOT NULL,
+completed_on date,
+status_check char(1),
+contraint task_id_primary key(task id),
+constraint status_st check(status in('Y','N'))
+);
+select *from work;
+
+
