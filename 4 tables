@@ -1,0 +1,100 @@
+DROP TABLE Books;
+CREATE TABLE Books(
+book_id number NOT NULL PRIMARY KEY,
+book_name varchar2(25) NOT NULL,
+author_name varchar2(25) NOT NULL UNIQUE,
+price number NOT NULL,
+constraint price_cq check(price>=0),
+publisher varchar2(25) NOT NULL,
+editioner number UNIQUE,
+categories varchar2(25) NOT NULL,
+active char(1),
+constraint active_cq check(active in('y','n'))
+);
+INSERT INTO Books(book_id,book_name,author_name,price,publisher,editioner,categories,active)
+VALUES(1,'ORACLE','ARJUN',1800,'CHAINSYS',2,'SOFTWARE','y');
+INSERT INTO Books(book_id,book_name,author_name,price,publisher,editioner,categories,active)
+VALUES(2,'ORACLE','ARJUNAK',1900,'CHAINSYS',3,'SOFTWARE','y');
+INSERT INTO Books(book_id,book_name,author_name,price,publisher,editioner,categories,active)
+VALUES(3,'ORACLE','ARJUNAE',2000,'CHAINSYS2',1,'DEVELOPER','y');
+INSERT INTO Books(book_id,book_name,author_name,price,publisher,editioner,categories,active)
+VALUES(4,'ORACLE','ARJUNAKKB',2100,'CHAINSYS3',6,'SOFTWARE','y');
+INSERT INTO Books(book_id,book_name,author_name,price,publisher,editioner,categories,active)
+VALUES(5,'ORACLE','ARJUNKUMAR',2200,'CHAINSYS4',5,'ANDROID','n');
+SELECT * FROM Books;
+
+DROP TABLE ORDERS;
+CREATE TABLE ORDERS(
+orders_id number,
+username varchar2(25) NOT NULL,
+book_id number,
+constraint oid_pk PRIMARY KEY (orders_id),
+constraint bid_fk FOREIGN KEY (book_id) REFERENCES Books(book_id),
+ordered_date timestamp,
+delivery_date timestamp,
+total_amount number NOT NULL,
+constraint total_amount_cq check(total_amount>=0),
+quantity number NOT NULL,
+constraint quantity_cq check(quantity>1),
+status varchar2(20) default 'PENDING',
+constraint status_cq check(status in('ORDERED','DELIVERED','PENDING')),
+comments varchar2(100),
+constraint combined unique(username,book_id,ordered_date)
+);
+INSERT INTO ORDERS(orders_id,username,book_id,ordered_date,total_amount,quantity,comments)
+VALUES(1,'ARUNKUMAR',1,to_date('26-12-2019','DD-MM-YYYY'),1950,2,'BEST');
+INSERT INTO ORDERS(orders_id,username,book_id,ordered_date,total_amount,quantity,comments)
+VALUES(2,'ANANTHKUMAR',2,to_date('27-12-2019','DD-MM-YYYY'),2950,2,'BETTER');
+INSERT INTO ORDERS(orders_id,username,book_id,ordered_date,total_amount,quantity,comments)
+VALUES(3,'AHARISHKUMAR',3,to_date('28-12-2019','DD-MM-YYYY'),3950,3,'BEST');
+INSERT INTO ORDERS(orders_id,username,book_id,ordered_date,total_amount,quantity,comments)
+VALUES(4,'RATHNAKUMAR',4,to_date('29-12-2019','DD-MM-YYYY'),4950,4,'GOOD');
+INSERT INTO ORDERS(orders_id,username,book_id,ordered_date,total_amount,quantity,comments)
+VALUES(5,'AJITHKUMAR',5,to_date('30-12-2019','DD-MM-YYYY'),5950,5,'NOT_BAD');
+UPDATE ORDERS set delivery_date=SYSDATE,status='DELIVERED' where book_id=1;
+UPDATE ORDERS set delivery_date=to_date('31-12-2019','DD-MM-YYYY'),status='DELIVERED' where book_id=5;
+select * FROM ORDERS;
+
+DROP TABLE ORDERED_LIST;
+CREATE TABLE ORDERED_LIST(
+book_id number,
+book_name varchar2(25) NOT NULL,
+book_stocks number NOT NULL,
+constraint book_stocks_cq check(book_stocks>=0),
+book_price number NOT NULL,
+constraint book_price_cq check(book_price>=0),
+constraint bname_pk PRIMARY KEY(book_name),
+constraint bid_fek FOREIGN KEY(book_id) REFERENCES Books(book_id)
+);
+INSERT INTO ORDERED_LIST(book_id,book_name,book_stocks,book_price) VALUES(1,'ORACLE',10,100);
+INSERT INTO ORDERED_LIST(book_id,book_name,book_stocks,book_price) VALUES(2,'JAVA',5,220);
+INSERT INTO ORDERED_LIST(book_id,book_name,book_stocks,book_price) VALUES(3,'SQL',6,240);
+INSERT INTO ORDERED_LIST(book_id,book_name,book_stocks,book_price) VALUES(4,'AUTOMOBILE',7,260);
+INSERT INTO ORDERED_LIST(book_id,book_name,book_stocks,book_price) VALUES(5,'THERMAL',8,280);
+select * FROM ORDERED_LIST;
+
+DROP TABLE STOCKS;
+CREATE TABLE STOCKS(
+book_id number,
+serialnumber number NOT NULL,
+constraint serialnumber_ck check(serialnumber>=0),
+constraint sn_pk PRIMARY KEY(serialnumber),
+constraint  bid_fnk FOREIGN KEY(book_id) REFERENCES Books(book_id),
+remaining_stocks number NULL
+);
+INSERT INTO STOCKS(book_id,serialnumber) VALUES(1,4);
+INSERT INTO STOCKS(book_id,serialnumber) VALUES(2,3);
+INSERT INTO STOCKS(book_id,serialnumber) VALUES(3,2);
+INSERT INTO STOCKS(book_id,serialnumber) VALUES(4,5);
+INSERT INTO STOCKS(book_id,serialnumber) VALUES(5,1);
+select * FROM STOCKS;
+UPDATE STOCKS SET remaining_stocks=((select book_stocks FROM ORDERED_LIST where book_id=2)-(select serialnumber FROM STOCKS where book_id=2)) where book_id=2;
+UPDATE STOCKS SET remaining_stocks=((select book_stocks FROM ORDERED_LIST where book_id=3)-(select serialnumber FROM STOCKS where book_id=3)) where book_id=3;
+UPDATE STOCKS SET remaining_stocks=((select book_stocks FROM ORDERED_LIST where book_id=4)-(select serialnumber FROM STOCKS where book_id=4)) where book_id=4;
+UPDATE STOCKS SET remaining_stocks=((select book_stocks FROM ORDERED_LIST where book_id=5)-(select serialnumber FROM STOCKS where book_id=5)) where book_id=5;
+UPDATE STOCKS SET remaining_stocks=((select book_stocks FROM ORDERED_LIST where book_id=1)-(select serialnumber FROM STOCKS where book_id=1)) where book_id=1;
+
+SELECT * FROM (((Books 
+INNER JOIN ORDERS ON Books.book_id=ORDERS.book_id)
+INNER JOIN ORDERED_LIST ON Books.book_id=ORDERED_LIST.book_id)
+INNER JOIN STOCKS ON Books.book_id=STOCKS.book_id);
