@@ -1,4 +1,4 @@
-#Course Registration
+###Course Registration
 
 ## FEATURES:
 Student able to select their subjects          
@@ -8,7 +8,7 @@ Student able to select their subjects
 Query:
 
 
-```
+```sql
 DROP TABLE personal_details;
 CREATE TABLE personal_details(
 names varchar2(25) NOT NULL,
