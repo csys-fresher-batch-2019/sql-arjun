@@ -107,17 +107,15 @@ SELECT * FROM post_experience_details;
 table 2:post_experience_details:
 
 
-| emp_id | years_of_expriences | date_of_joining | date_of_ending | designation | company_name |
-|--------|---------------------|-----------------|----------------|-------------|--------------|
-|        |                     |                 |                |             |              |
-|        |                     |                 |                |             |              |
-|        |                     |                 |                |             |              |
-|        |                     |                 |                |             |              |
-|        |                     |                 |                |             |              |
-|        |                     |                 |                |             |              |
-
-
-
+| EMP_ID | YEAR_OF_EXPERIENCE | DATE_OF_JOINING        | DATE_OF_LEAVING        | DESIGNATION | COMPANY_NAME |
+|--------|--------------------|------------------------|------------------------|-------------|--------------|
+| 2      | 2                  | 17-12-2017 12:00:00 AM | 17-12-2019 12:00:00 AM | developer   | cts          |
+| 3      | 1                  | 17-12-2015 12:00:00 AM | 17-12-2016 12:00:00 AM | developer   | zoho         |
+| 5      | 1                  | 20-02-2018 12:00:00 AM | 20-02-2019 12:00:00 AM | developer   | tcs          |
+| 6      | 3                  | 20-02-2017 12:00:00 AM | 20-02-2020 12:00:00 AM | hr          | tcs_digital  |
+| 7      | 4                  | 03-05-2016 12:00:00 AM | 03-05-2020 12:00:00 AM | hr          | wipro        |
+| 8      | 1                  | 03-05-2018 12:00:00 AM | 03-05-2019 12:00:00 AM | developer   | infosys      |
+| 9      | 1                  | 05-08-2019 12:00:00 AM | 05-08-2020 12:00:00 AM | testing     | lnt          |
 ```
 
 ###Feature 3:Team Role Work
@@ -174,18 +172,19 @@ SELECT * FROM team_role_work;
 table 3:team_role_work
 
 
-| team_id | emp_id | emp_role  | team_joined_on | team_exit_on |
-|---------|--------|-----------|----------------|--------------|
-| 1       | 1      | testing   |                |              |
-| 1       | 2      | developer |                |              |
-| 1       | 3      | HR        |                |              |
-| 2       | 4      | testing   |                |              |
-| 2       | 5      | developer |                |              |
-| 2       | 6      | HR        |                |              |
-| 3       | 7      | HR        |                |              |
-| 3       | 8      | developer |                |              |
-| 3       | 9      | testing   |                |              |
-| 3       | 10     | trainee   |                |              |
+
+   TEAM_ID     EMP_ID EMP_ROLE                  TEAM_JOINED_DATE    TEAM_EXIT_ON                    
+---------- ---------- ------------------------- --------           --------------------------------
+         1          1 testing                   20-12-20               NULL                 
+         1          2 developer                 20-12-19             03-01-20                        
+         1          3 hr                        20-12-16               NULL                
+         2          4 testing                   20-12-20               NULL               
+         2          5 developer                 23-02-19             03-01-20                        
+         2          6 hr                        23-02-20               NULL                
+         3          7 hr                        07-05-20               NULL                
+         3          8 developer                 07-05-19               NULL                
+         3          9 testing                   10-08-20             03-01-20                        
+         3         10 trainee                   10-08-20               NULL                
 
 
 ```
@@ -282,12 +281,27 @@ SELECT * FROM project_done;
 table 5:projects_done
 
 
-| project_id | project_name | team_id | project_start_date | project_end_date | status |  |
-|------------|--------------|---------|--------------------|------------------------|--------|--------|--------------------------|
-| 1          | appconnect   | 1       |                    |                        |        |        |                          |
-| 2          | appmigrate   | 2       |                    |                        |        |        |                          |
-| 3          | appbuilder   | 3       |                    |                        |        |        |                          |
+| project_id | project_name | team_id | project_start_date | Project_End_Date | status    |
+|------------|--------------|---------|--------------------|------------------|-----------|
+| 1          | appconnect   | 1       | 30-12-2020         | 29-05-2021       | completed |
+| 2          | appbuilder   | 2       | 30-12-2020         | 29-05-2021       | on_going  |
+| 3          | appmigrate   | 3       | 20-08-2020         | 17-01-2021       | on_going  |
 
+
+
+
+--for getting all experienced employees details
+select * from employeer_details ede,post_experience_details post,team_role_work works,team_details tde,project_done p
+where ede.emp_id=post.emp_id and ede.emp_id=works.emp_id and works.team_id=tde.team_id and tde.team_id=p.team_id;
+
+--for getting female employee name
+select emp_name from employeer_details where gender='F';
+
+--for getting employee designation
+select emp_role from team_role_work where emp_id=3;
+
+--for getting number of persons in a team
+select team_id,count(*) from team_role_work group by team_id;
 
 
 ```
