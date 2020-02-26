@@ -111,6 +111,17 @@ values(employee_id_seq.nextval,'KARTHICK','karrthicks10@gmail.com',5,'Chennai');
 ```
 ```sql
 
+select * from blood_app;
+```
+
+| User_Id | User_Name | Email                  | Blood_Group_Id | Active | City       |
+|---------|-----------|------------------------|----------------|--------|------------|
+| 1       | ARJUN     | arjunae798@gmail.com   | 1              | 1      | Madurai    |
+| 2       | KESAVAN   | kesavanp555@gmail.com  | 3              | 1      | Coimbatore |
+| 3       | KARTHICK  | karrthicks10@gmail.com | 5              | 1      | Chennai    |
+
+```
+```sql
 
 --inner join--
 select user_id,user_name,email,blood_group,active,city from blood_app ba
@@ -120,8 +131,5 @@ inner join bloodGroupDetails bg on bg.blood_group_id=ba.blood_group_id;
 
 --sub query--
 select count(user_id) from blood_app where blood_group_id=(select blood_group_id from bloodGroupDetails where blood_group ='A+ve' ) and city='Madurai';       
-```
-```sql
 
-select * from blood_app;
 ```
