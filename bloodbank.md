@@ -80,6 +80,20 @@ values(9,'Golden Blood');
 select * from bloodGroupDetails;
 
 ```
+
+| Blood_Group_Id | Blood_Group  |
+|----------------|--------------|
+| 1              | A+ve         |
+| 2              | A-ve         |
+| 3              | B+ve         |
+| 4              | B-ve         |
+| 5              | O+ve         |
+| 6              | O-ve         |
+| 7              | AB+ve        |
+| 8              | AB-ve        |
+| 9              | Golden Blood |
+
+
 ```sql
 
 insert into blood_app(user_id,user_name,email,blood_group_id,city)
